@@ -32,7 +32,7 @@ const Header = ({ isDark, toggleDarkMode }) => {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
               <span className="text-white font-bold text-xl leading-none">P</span>
             </div>
-            <span className="font-bold text-xl tracking-tight dark:text-white">Planner</span>
+            <span className="font-bold text-xl tracking-tight dark:text-white">Plannium</span>
           </div>
 
           {/* Search Bar */}
