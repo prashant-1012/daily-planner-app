@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { format } from 'date-fns';
+import { loadTasks } from '../../utils/storage';
 
 const initialState = {
-  tasks: [],
+  tasks: loadTasks(),
   filters: {
     search: '',
     date: format(new Date(), 'yyyy-MM-dd'),
