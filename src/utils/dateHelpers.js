@@ -8,17 +8,18 @@ import {
 } from 'date-fns';
 
 /**
- * Generates an array of dates starting from today.
- * @param {number} days - Number of days to generate.
+ * Generates an array of dates starting from a specific date.
+ * @param {number} count - Number of days to generate.
+ * @param {Date} startDate - The date to start from.
  * @returns {Date[]}
  */
-export const getNextDays = (count = 7) => {
-  const today = startOfToday();
+export const getNextDays = (count = 7, startDate = startOfToday()) => {
   return eachDayOfInterval({
-    start: today,
-    end: addDays(today, count - 1),
+    start: startDate,
+    end: addDays(startDate, count - 1),
   });
 };
+
 
 /**
  * Formats a date for display in the card header.

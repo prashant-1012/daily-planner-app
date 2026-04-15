@@ -106,13 +106,15 @@ const TaskItem = ({ task }) => {
       </div>
 
       {/* For Tablet/Mobile: Action icons always visible if not editing */}
-      <style jsx>{`
-        @media (max-width: 1024px) {
-          .group-hover\:opacity-100 {
-            opacity: 1 !important;
+      <style>
+        {`
+          @media (max-width: 1024px) {
+            .opacity-0.group-hover\\:opacity-100 {
+              opacity: 1 !important;
+            }
           }
-        }
-      `}</style>
+        `}
+      </style>
     </motion.div>
   );
 };

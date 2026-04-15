@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { format } from 'date-fns';
 
 const initialState = {
   tasks: [],
   filters: {
     search: '',
-    date: null,
+    date: format(new Date(), 'yyyy-MM-dd'),
   },
 };
 
@@ -36,6 +37,9 @@ const taskSlice = createSlice({
     setSearchFilter: (state, action) => {
       state.filters.search = action.payload;
     },
+    setDateFilter: (state, action) => {
+      state.filters.date = action.payload;
+    },
   },
 });
 
@@ -45,7 +49,9 @@ export const {
   updateTask, 
   deleteTask, 
   toggleTaskComplete,
-  setSearchFilter 
+  setSearchFilter,
+  setDateFilter
 } = taskSlice.actions;
+
 
 export default taskSlice.reducer;

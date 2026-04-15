@@ -1,42 +1,92 @@
 import React from 'react';
-import { Search, Plus, Sun, Moon, Bell } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Search, Plus, Sun, Moon, Bell, X, Calendar } from 'lucide-react';
+import { setSearchFilter, setDateFilter } from '../features/tasks/taskSlice';
+
 
 const Header = ({ isDark, toggleDarkMode }) => {
+  const dispatch = useDispatch();
+  const searchFilter = useSelector((state) => state.tasks.filters.search);
+  const dateFilter = useSelector((state) => state.tasks.filters.date);
+  const dateInputRef = React.useRef(null);
+
+  const handleSearchChange = (e) => {
+    dispatch(setSearchFilter(e.target.value));
+  };
+
+  const clearSearch = () => {
+    dispatch(setSearchFilter(''));
+  };
+
+  const handleDateChange = (e) => {
+    dispatch(setDateFilter(e.target.value));
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-gray-200 dark:border-gray-800 transition-colors duration-300">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         
         {/* Left Side: Logo & Search */}
         <div className="flex items-center gap-6 flex-1 max-w-xl">
-          <div className="hidden md:flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div className="hidden md:flex items-center gap-2 shrink-0">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
               <span className="text-white font-bold text-xl leading-none">P</span>
             </div>
             <span className="font-bold text-xl tracking-tight dark:text-white">Planner</span>
           </div>
 
           {/* Search Bar */}
-          <div className="relative flex-1 group">
+          <div className="relative flex-1 group max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
             <input 
               type="text" 
+              value={searchFilter}
+              onChange={handleSearchChange}
               placeholder="Search tasks..." 
-              className="w-full bg-gray-100 dark:bg-gray-900 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20 dark:text-gray-100 outline-none transition-all"
+              className="w-full bg-gray-100 dark:bg-gray-900 border-none rounded-xl py-2 pl-10 pr-10 text-sm focus:ring-2 focus:ring-blue-500/20 dark:text-gray-100 outline-none transition-all"
             />
+            {searchFilter && (
+              <button 
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition-colors"
+                title="Clear search"
+              >
+                <X className="w-3 h-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" />
+              </button>
+            )}
           </div>
         </div>
 
         {/* Right Side: Actions & Profile */}
         <div className="flex items-center gap-2 md:gap-4">
           
-          {/* Add Task Button (Desktop) */}
+          {/* Quick Add Button (Desktop) */}
           <button className="hidden sm:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95">
             <Plus className="w-4 h-4" />
             <span>New Task</span>
           </button>
 
           {/* Icon Buttons */}
-          <div className="flex items-center gap-1 border-l border-gray-200 dark:border-gray-800 ml-2 pl-2">
+          <div className="flex items-center gap-1 border-l border-gray-200 dark:border-gray-800 ml-1 pl-1 md:ml-2 md:pl-2">
+            {/* Date Picker Button */}
+            <div className="relative group">
+              <button 
+                onClick={() => dateInputRef.current.showPicker()}
+                className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors flex items-center gap-2"
+                title="Change Date Range"
+              >
+                <Calendar className="w-5 h-5" />
+                <span className="hidden xl:block text-xs font-medium text-gray-400">{dateFilter}</span>
+              </button>
+              <input 
+                ref={dateInputRef}
+                type="date" 
+                value={dateFilter}
+                onChange={handleDateChange}
+                className="absolute opacity-0 pointer-events-none"
+              />
+            </div>
+
             <button 
               onClick={toggleDarkMode}
               className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
@@ -51,8 +101,8 @@ const Header = ({ isDark, toggleDarkMode }) => {
           </div>
 
           {/* Profile Section */}
-          <div className="flex items-center gap-2 ml-2 cursor-pointer group">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-0.5">
+          <div className="flex items-center gap-2 ml-1 cursor-pointer group">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-0.5 shadow-sm">
               <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 flex items-center justify-center overflow-hidden">
                 <img 
                   src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
@@ -70,4 +120,6 @@ const Header = ({ isDark, toggleDarkMode }) => {
   );
 };
 
+
 export default Header;
+
