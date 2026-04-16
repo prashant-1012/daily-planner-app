@@ -56,11 +56,11 @@ const DayCard = ({ date, tasks = [] }) => {
   };
 
   return (
-    <div className={`flex flex-col bg-white dark:bg-gray-900 rounded-3xl border transition-all duration-300 group
+    <div className={`flex flex-col rounded-2xl border transition-all duration-200 hover:scale-[1.01] group
       ${isExpanded ? 'min-h-[450px] md:min-h-[450px]' : 'min-h-fit md:min-h-[450px]'}
       ${isCurrentDay 
-        ? 'ring-2 ring-blue-500/20 border-blue-200 dark:border-blue-900/50 shadow-xl shadow-blue-500/5' 
-        : 'border-gray-100 dark:border-gray-800 hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-lg'
+        ? 'bg-gradient-to-b from-blue-50/50 to-white dark:from-[#162033] dark:to-[#121a2b] border-blue-500/30 dark:border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.1)] dark:shadow-[0_0_30px_rgba(59,130,246,0.15)] relative z-10' 
+        : 'bg-white dark:bg-[#121a2b] opacity-100 dark:opacity-90 border-gray-100 dark:border-gray-800/80 hover:border-gray-200 dark:hover:border-gray-700/80 hover:dark:opacity-100 hover:shadow-lg'
       }`}>
       
       {/* Card Header */}
@@ -81,20 +81,21 @@ const DayCard = ({ date, tasks = [] }) => {
         <div className="flex items-center gap-3">
           {/* Animated Premium Counter */}
           <AnimatePresence mode="wait">
-            <motion.span
+            <motion.div
               key={statusText}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className={`text-xs font-medium tracking-wide ${
+              initial={{ opacity: 0, scale: 0.95, y: -2 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 2 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className={`flex items-center gap-1.5 text-xs transition-all duration-200 ${
                 remaining === 0 && tasks.length > 0
-                  ? 'text-green-500 dark:text-green-400' 
-                  : 'text-gray-400 dark:text-gray-500'
+                  ? 'text-green-500 dark:text-green-400 font-medium' 
+                  : 'text-gray-400 dark:text-white/50 font-normal'
               }`}
             >
-              {statusText}
-            </motion.span>
+              <div className="w-1.5 h-1.5 rounded-full bg-current opacity-60" />
+              <span>{statusText}</span>
+            </motion.div>
           </AnimatePresence>
 
           <div className="flex items-center gap-1">
@@ -138,7 +139,7 @@ const DayCard = ({ date, tasks = [] }) => {
 
           {/* Add Task Input / Button */}
           <div 
-            className="p-4 mt-auto"
+            className="p-5 mt-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {isAdding ? (
