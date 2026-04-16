@@ -4,12 +4,14 @@ import { useDarkMode } from './hooks/useDarkMode';
 import CalendarGrid from './features/calendar/CalendarGrid';
 import Onboarding from './components/onboarding/Onboarding';
 import Greeting from './components/Greeting';
+import ProfileDrawer from './components/profile/ProfileDrawer';
 import { getUserProfile } from './utils/userProfile';
 
 function App() {
   const [isDark, toggleDarkMode] = useDarkMode();
   const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   useEffect(() => {
     const profile = getUserProfile();
@@ -32,13 +34,26 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       {/* Header component with dark mode toggle props */}
-      <Header isDark={isDark} toggleDarkMode={toggleDarkMode} userProfile={userProfile} />
+      <Header 
+        isDark={isDark} 
+        toggleDarkMode={toggleDarkMode} 
+        userProfile={userProfile}
+        onProfileClick={() => setIsProfileOpen(true)}
+      />
 
       {/* Main Content Area */}
       <main className="max-w-[1600px] mx-auto px-4 md:px-8 py-8 animate-in fade-in duration-500">
         <Greeting name={userProfile?.name} />
         <CalendarGrid />
       </main>
+
+      {/* Profile Edit Drawer */}
+      <ProfileDrawer
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        currentProfile={userProfile}
+        onSave={(updatedProfile) => setUserProfile(updatedProfile)}
+      />
     </div>
   );
 }

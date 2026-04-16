@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Plus, MoreVertical, X, ChevronDown, Coffee } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { formatDayHeader, isToday, isTomorrow, formatDateKey } from '../../utils/dateHelpers';
+import { getTaskStatus } from '../../utils/getTaskStatus';
 import { addTask } from '../tasks/taskSlice';
 import TaskItem from '../tasks/TaskItem';
 
@@ -15,6 +16,8 @@ const DayCard = ({ date, tasks = [] }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [isExpanded, setIsExpanded] = useState(isCurrentDay || isNextDay);
   const inputRef = useRef(null);
+
+  const { text: statusText, remaining } = getTaskStatus(tasks);
 
   // Auto-focus the input when entering "add mode"
   useEffect(() => {
@@ -69,25 +72,42 @@ const DayCard = ({ date, tasks = [] }) => {
           <h3 className={`font-bold text-lg dark:text-gray-100 ${isCurrentDay ? 'text-blue-600' : 'text-gray-800'}`}>
             {formatDayHeader(date)}
           </h3>
-          <span className="text-sm font-medium text-gray-500 bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 rounded-full flex items-center justify-center">
-            {tasks.length}
-          </span>
           {isCurrentDay && (
             <span className="text-[10px] font-bold uppercase tracking-wider text-blue-500 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">
               Today
             </span>
           )}
         </div>
-        <div className="flex items-center gap-1">
-          <button className="md:hidden p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg transition-transform duration-300">
-            <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-          </button>
-          <button 
-            className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <MoreVertical className="w-4 h-4" />
-          </button>
+        <div className="flex items-center gap-3">
+          {/* Animated Premium Counter */}
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={statusText}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className={`text-xs font-medium tracking-wide ${
+                remaining === 0 && tasks.length > 0
+                  ? 'text-green-500 dark:text-green-400' 
+                  : 'text-gray-400 dark:text-gray-500'
+              }`}
+            >
+              {statusText}
+            </motion.span>
+          </AnimatePresence>
+
+          <div className="flex items-center gap-1">
+            <button className="md:hidden p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg transition-transform duration-300">
+              <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+            </button>
+            <button 
+              className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MoreVertical className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 

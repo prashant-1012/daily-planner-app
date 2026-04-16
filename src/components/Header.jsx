@@ -4,7 +4,7 @@ import { Search, Plus, Sun, Moon, Bell, X, Calendar } from 'lucide-react';
 import { setSearchFilter, setDateFilter } from '../features/tasks/taskSlice';
 
 
-const Header = ({ isDark, toggleDarkMode, userProfile }) => {
+const Header = ({ isDark, toggleDarkMode, userProfile, onProfileClick }) => {
   const dispatch = useDispatch();
   const searchFilter = useSelector((state) => state.tasks.filters.search);
   const dateFilter = useSelector((state) => state.tasks.filters.date);
@@ -101,8 +101,11 @@ const Header = ({ isDark, toggleDarkMode, userProfile }) => {
           </div>
 
           {/* Profile Section */}
-          <div className="flex items-center gap-2 ml-1 cursor-pointer group">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-0.5 shadow-sm">
+          <div 
+            className="flex items-center gap-2 ml-1 cursor-pointer group"
+            onClick={onProfileClick}
+          >
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-0.5 shadow-sm transition-transform active:scale-95 group-hover:scale-105">
               <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 flex items-center justify-center overflow-hidden">
                 {userProfile?.avatar ? (
                   <img 

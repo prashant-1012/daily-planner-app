@@ -2,13 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Circle, Trash2, Edit3, X, Check } from 'lucide-react';
-import { toggleTaskComplete, deleteTask, updateTask } from './taskSlice';
+import { toggleTaskComplete, deleteTask, updateTask, addTask } from './taskSlice';
+import { useToast } from '../../context/ToastContext';
 
 /**
  * TaskItem - Handles individual task display, completion, editing, and deletion.
  */
 const TaskItem = ({ task }) => {
   const dispatch = useDispatch();
+  const { addToast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.title);
   const editInputRef = useRef(null);
@@ -105,7 +107,15 @@ const TaskItem = ({ task }) => {
           <Edit3 className="w-4 h-4" />
         </button>
         <button 
-          onClick={() => dispatch(deleteTask(task.id))}
+          onClick={() => {
+            dispatch(deleteTask(task.id));
+            addToast({
+              message: 'Task deleted',
+              actionText: 'Undo',
+              onAction: () => dispatch(addTask(task)),
+              duration: 5000
+            });
+          }}
           className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all"
           title="Delete Task"
         >
