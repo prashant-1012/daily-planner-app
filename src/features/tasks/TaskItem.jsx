@@ -87,8 +87,9 @@ const TaskItem = ({ task }) => {
           </div>
         ) : (
           <p 
-            onClick={() => setIsEditing(true)}
-            className={`text-sm truncate cursor-text select-none ${
+            // onClick={() => setIsEditing(true)}
+            onClick={() => dispatch(toggleTaskComplete(task.id))}
+            className={`text-sm truncate cursor-pointer select-none ${
               task.completed 
                 ? 'text-gray-400 line-through' 
                 : 'text-gray-700 dark:text-gray-200 font-medium'
