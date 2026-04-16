@@ -4,7 +4,7 @@ import { Search, Plus, Sun, Moon, Bell, X, Calendar } from 'lucide-react';
 import { setSearchFilter, setDateFilter } from '../features/tasks/taskSlice';
 
 
-const Header = ({ isDark, toggleDarkMode }) => {
+const Header = ({ isDark, toggleDarkMode, userProfile }) => {
   const dispatch = useDispatch();
   const searchFilter = useSelector((state) => state.tasks.filters.search);
   const dateFilter = useSelector((state) => state.tasks.filters.date);
@@ -104,14 +104,22 @@ const Header = ({ isDark, toggleDarkMode }) => {
           <div className="flex items-center gap-2 ml-1 cursor-pointer group">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-0.5 shadow-sm">
               <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 flex items-center justify-center overflow-hidden">
-                <img 
-                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
-                  alt="User Profile" 
-                  className="w-full h-full object-cover"
-                />
+                {userProfile?.avatar ? (
+                  <img 
+                    src={userProfile.avatar} 
+                    alt="User Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-sm font-bold text-gray-500 dark:text-gray-400">
+                    {userProfile?.name?.charAt(0).toUpperCase() || 'P'}
+                  </span>
+                )}
               </div>
             </div>
-            <span className="hidden lg:block text-sm font-semibold dark:text-gray-200 group-hover:text-blue-600 transition-colors">Prashant</span>
+            <span className="hidden lg:block text-sm font-semibold dark:text-gray-200 group-hover:text-blue-600 transition-colors">
+              {userProfile?.name || 'Prashant'}
+            </span>
           </div>
         </div>
 
