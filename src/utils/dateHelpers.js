@@ -40,6 +40,15 @@ export const isToday = (date) => {
 };
 
 /**
+ * Checks if a date is tomorrow.
+ * @param {Date} date 
+ * @returns {boolean}
+ */
+export const isTomorrow = (date) => {
+  return isSameDay(date, startOfTomorrow());
+};
+
+/**
  * Formats a date to a standard string for Redux storage.
  * @param {Date} date 
  * @returns {string} - e.g., "2024-06-12"
