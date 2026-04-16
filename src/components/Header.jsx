@@ -24,15 +24,15 @@ const Header = ({ isDark, toggleDarkMode, userProfile, onProfileClick }) => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-gray-200 dark:border-gray-800 transition-colors duration-300">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-[1600px] mx-auto px-4 h-16 flex items-center justify-between gap-4">
         
         {/* Left Side: Logo & Search */}
-        <div className="flex items-center gap-6 flex-1 max-w-xl">
-          <div className="hidden md:flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-3 md:gap-6 flex-1 max-w-xl">
+          <div className="flex items-center gap-2 shrink-0">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
               <span className="text-white font-bold text-xl leading-none">P</span>
             </div>
-            <span className="font-bold text-xl tracking-tight dark:text-white">Plannium</span>
+            <span className="hidden sm:block font-bold text-xl tracking-tight dark:text-white">Plannium</span>
           </div>
 
           {/* Search Bar */}

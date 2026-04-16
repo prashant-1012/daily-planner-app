@@ -32,7 +32,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+    <div className="min-h-screen overflow-x-hidden bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       {/* Header component with dark mode toggle props */}
       <Header 
         isDark={isDark} 
