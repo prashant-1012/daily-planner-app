@@ -61,10 +61,10 @@ const Header = ({ isDark, toggleDarkMode, userProfile, onProfileClick }) => {
         <div className="flex items-center gap-2 md:gap-4">
           
           {/* Quick Add Button (Desktop) */}
-          <button className="hidden sm:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95">
+          {/* <button className="hidden sm:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95">
             <Plus className="w-4 h-4" />
             <span>New Task</span>
-          </button>
+          </button> */}
 
           {/* Icon Buttons */}
           <div className="flex items-center gap-1 border-l border-gray-200 dark:border-gray-800 ml-1 pl-1 md:ml-2 md:pl-2">
@@ -95,9 +95,9 @@ const Header = ({ isDark, toggleDarkMode, userProfile, onProfileClick }) => {
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
             
-            <button className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+            {/* <button className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
               <Bell className="w-5 h-5" />
-            </button>
+            </button> */}
           </div>
 
           {/* Profile Section */}

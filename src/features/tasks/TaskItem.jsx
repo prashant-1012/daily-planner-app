@@ -37,6 +37,8 @@ const TaskItem = ({ task }) => {
     }
   };
 
+// border right thickness
+
   return (
     <motion.div
       layout
@@ -45,8 +47,8 @@ const TaskItem = ({ task }) => {
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
       className={`group flex items-center gap-3 p-3 border-r-4 rounded-2xl border transition-all duration-200
         ${task.completed 
-          ? 'bg-gray-50/50 dark:bg-gray-800/20 border-transparent shadow-inner' 
-          : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900/50'
+          ? 'bg-gray-50/50 dark:bg-gray-800/30 border-transparent shadow-inner' 
+          : 'bg-white dark:bg-gray-800/80 border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900/50'
         }`}
     >
       {/* Checkbox Icon */}

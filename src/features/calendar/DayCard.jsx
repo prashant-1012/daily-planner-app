@@ -102,12 +102,15 @@ const DayCard = ({ date, tasks = [] }) => {
             <button className="md:hidden p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg transition-transform duration-300">
               <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
             </button>
-            <button 
+
+            {/* TODO: Add more options here - triple dot */}
+            {/* <button 
               className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
               onClick={(e) => e.stopPropagation()}
             >
               <MoreVertical className="w-4 h-4" />
-            </button>
+            </button> */}
+
           </div>
         </div>
       </div>
