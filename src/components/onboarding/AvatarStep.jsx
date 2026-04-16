@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Upload, Check } from 'lucide-react';
 
 const AVATAR_SEEDS = [
-  'Felix', 'Aneka', 'Oliver', 'Mia', 'Jack', 'Lucy', 'Max', 'Luna'
+  'Felix', 'Aneka', 'Oliver', 'Mia', 'Jack', 'Lucy', 'Max', 'Alexander'
 ];
 
 const getDiceBearUrl = (seed) => `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
