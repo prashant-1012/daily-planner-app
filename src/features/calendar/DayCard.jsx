@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Plus, MoreVertical, X, ChevronDown } from 'lucide-react';
+import { Plus, MoreVertical, X, ChevronDown, Coffee } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { formatDayHeader, isToday, isTomorrow, formatDateKey } from '../../utils/dateHelpers';
 import { addTask } from '../tasks/taskSlice';
@@ -107,8 +107,9 @@ const DayCard = ({ date, tasks = [] }) => {
                 ))
               ) : (
                 !isAdding && (
-                  <div className="h-24 flex flex-col items-center justify-center border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-2xl">
-                    <p className="text-xs text-gray-400">No tasks planned</p>
+                  <div className="h-28 flex flex-col items-center justify-center border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-2xl gap-2 text-gray-400 dark:text-gray-500">
+                    <Coffee className="w-5 h-5 opacity-60" strokeWidth={1.5} />
+                    <p className="text-xs font-medium">Nothing on the agenda</p>
                   </div>
                 )
               )}

@@ -50,14 +50,22 @@ const TaskItem = ({ task }) => {
       {/* Checkbox Icon */}
       <button 
         onClick={() => dispatch(toggleTaskComplete(task.id))}
-        className="shrink-0 transition-transform active:scale-90"
+        className="relative flex items-center justify-center w-6 h-6 shrink-0 transition-transform active:scale-95 group"
         aria-label="Toggle Complete"
       >
-        {task.completed ? (
-          <CheckCircle2 className="w-6 h-6 text-green-500 fill-green-50 dark:fill-green-950" />
-        ) : (
-          <Circle className="w-6 h-6 text-gray-300 dark:text-gray-600 hover:text-blue-500 transition-colors" />
-        )}
+        <div 
+          className={`absolute inset-0 rounded-[8px] border-[2px] transition-all duration-300 ease-out
+            ${task.completed 
+              ? 'bg-green-500 border-green-500 scale-[1.15]' 
+              : 'bg-transparent border-gray-300 dark:border-gray-600 group-hover:border-green-400 scale-100'
+            }`}
+        />
+        <Check 
+          strokeWidth={3.5}
+          className={`relative z-10 w-3.5 h-3.5 text-white transition-all duration-300 delay-75 ${
+            task.completed ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+          }`} 
+        />
       </button>
 
       {/* Task Text / Edit Input */}

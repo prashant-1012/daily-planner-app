@@ -3,6 +3,7 @@ import Header from './components/Header';
 import { useDarkMode } from './hooks/useDarkMode';
 import CalendarGrid from './features/calendar/CalendarGrid';
 import Onboarding from './components/onboarding/Onboarding';
+import Greeting from './components/Greeting';
 import { getUserProfile } from './utils/userProfile';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
 
       {/* Main Content Area */}
       <main className="max-w-[1600px] mx-auto px-4 md:px-8 py-8 animate-in fade-in duration-500">
+        <Greeting name={userProfile?.name} />
         <CalendarGrid />
       </main>
     </div>
