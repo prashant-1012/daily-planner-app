@@ -61,7 +61,7 @@ const AvatarStep = ({ avatar, setAvatar, onComplete }) => {
         className="w-full flex items-center justify-center gap-2 py-4 mb-8 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/50 rounded-2xl transition-all border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500"
       >
         <Upload className="w-4 h-4" />
-        <span>Upload custom photo (coming soon)</span>
+        <span>Upload custom photo</span>
       </button>
 
       <div className="flex flex-col gap-3">

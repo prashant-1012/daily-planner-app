@@ -8,8 +8,9 @@ export const useDarkMode = () => {
   // Check if user has a preference in localStorage or system settings
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    return saved === 'dark' || (!saved && prefersDark);
+    // Default to dark if no saved preference
+    if (!saved) return true;
+    return saved === 'dark';
   });
 
   useEffect(() => {
