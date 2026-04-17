@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Sunset, Moon, CloudSun, CloudMoon } from 'lucide-react';
+import { Sun, Moon, CloudSun, CloudMoon } from 'lucide-react';
 
 const Greeting = ({ name }) => {
   const [greetingInfo, setGreetingInfo] = useState({ text: '', Icon: Sun });
@@ -14,7 +14,7 @@ const Greeting = ({ name }) => {
       } else if (hour >= 17 && hour < 21) {
         setGreetingInfo({ text: 'Good evening', Icon: CloudMoon });
       } else {
-        setGreetingInfo({ text: 'Good night', Icon: CloudMoon });
+        setGreetingInfo({ text: 'Good night', Icon: Moon });
       }
     };
 
