@@ -116,7 +116,7 @@ const TaskItem = ({ task }) => {
               message: 'Task deleted',
               actionText: 'Undo',
               onAction: () => dispatch(addTask(task)),
-              duration: 5000
+              duration: 4000
             });
           }}
           className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all"

@@ -133,7 +133,8 @@ const DayCard = ({ date, tasks = [] }) => {
                 !isAdding && (
                   <div className="h-28 flex flex-col items-center justify-center border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-2xl gap-2 text-gray-400 dark:text-gray-500">
                     <Coffee className="w-5 h-5 opacity-60" strokeWidth={1.5} />
-                    <p className="text-xs font-medium">Nothing on the agenda</p>
+                    <p className="text-sm font-semibold">You're all caught up</p>
+  <p className="text-xs opacity-70">No tasks scheduled</p>
                   </div>
                 )
               )}
