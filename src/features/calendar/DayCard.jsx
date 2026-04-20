@@ -69,7 +69,7 @@ const DayCard = ({ date, tasks = [] }) => {
         onClick={toggleExpand}
       >
         <div className="flex items-center flex-wrap gap-2">
-          <h3 className={`font-bold text-lg dark:text-gray-100 ${isCurrentDay ? 'text-blue-600' : 'text-gray-800'}`}>
+          <h3 className={`font-bold text-sm dark:text-gray-100 ${isCurrentDay ? 'text-blue-600' : 'text-gray-800'}`}>
             {formatDayHeader(date)}
           </h3>
           {isCurrentDay && (
@@ -142,7 +142,7 @@ const DayCard = ({ date, tasks = [] }) => {
           </div>
 
           {/* Add Task Input / Button */}
-          <div 
+          {/* <div 
             className="p-4 mt-auto"
             onClick={(e) => e.stopPropagation()}
           >
@@ -174,7 +174,7 @@ const DayCard = ({ date, tasks = [] }) => {
                 <span>Add Task</span>
               </button>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
