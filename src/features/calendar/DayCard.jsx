@@ -65,7 +65,7 @@ const DayCard = ({ date, tasks = [] }) => {
       
       {/* Card Header */}
       <div 
-        className="p-5 flex items-center justify-between cursor-pointer md:cursor-default"
+        className="p-4 flex items-center justify-between cursor-pointer md:cursor-default"
         onClick={toggleExpand}
       >
         <div className="flex items-center flex-wrap gap-2">
@@ -123,7 +123,7 @@ const DayCard = ({ date, tasks = [] }) => {
       >
         <div className="overflow-hidden flex flex-col h-full min-h-0">
           {/* Task List */}
-          <div className="flex-1 px-5 space-y-3 overflow-y-auto max-h-[350px] custom-scrollbar pb-4" onClick={(e) => e.stopPropagation()}>
+          <div className="flex-1 px-4 space-y-1.5 overflow-y-auto max-h-[350px] custom-scrollbar pb-3" onClick={(e) => e.stopPropagation()}>
             <AnimatePresence mode="popLayout" initial={false}>
               {tasks.length > 0 ? (
                 tasks.map(task => (
@@ -131,10 +131,10 @@ const DayCard = ({ date, tasks = [] }) => {
                 ))
               ) : (
                 !isAdding && (
-                  <div className="h-28 flex flex-col items-center justify-center border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-2xl gap-2 text-gray-400 dark:text-gray-500">
-                    <Coffee className="w-5 h-5 opacity-60" strokeWidth={1.5} />
-                    <p className="text-sm font-semibold">You're all caught up</p>
-  <p className="text-xs opacity-70">No tasks scheduled</p>
+                  <div className="h-24 flex flex-col items-center justify-center border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-2xl gap-1 text-gray-400 dark:text-gray-500">
+                    <Coffee className="w-4 h-4 opacity-60" strokeWidth={1.5} />
+                    <p className="text-xs font-semibold">You're all caught up</p>
+                    <p className="text-[10px] opacity-70">No tasks scheduled</p>
                   </div>
                 )
               )}
@@ -143,7 +143,7 @@ const DayCard = ({ date, tasks = [] }) => {
 
           {/* Add Task Input / Button */}
           <div 
-            className="p-5 mt-auto"
+            className="p-4 mt-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {isAdding ? (

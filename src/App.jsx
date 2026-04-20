@@ -7,11 +7,15 @@ import Greeting from './components/Greeting';
 import ProfileDrawer from './components/profile/ProfileDrawer';
 import { getUserProfile } from './utils/userProfile';
 
+import FloatingActionButton from './ui/FloatingActionButton';
+import AddTaskModal from './features/tasks/AddTaskModal';
+
 function App() {
   const [isDark, toggleDarkMode] = useDarkMode();
   const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
 
   useEffect(() => {
     const profile = getUserProfile();
@@ -46,6 +50,15 @@ function App() {
         <Greeting name={userProfile?.name} />
         <CalendarGrid />
       </main>
+
+      {/* Floating Action Button */}
+      <FloatingActionButton onClick={() => setIsAddTaskModalOpen(true)} />
+
+      {/* Add Task Modal */}
+      <AddTaskModal 
+        isOpen={isAddTaskModalOpen} 
+        onClose={() => setIsAddTaskModalOpen(false)} 
+      />
 
       {/* Profile Edit Drawer */}
       <ProfileDrawer
