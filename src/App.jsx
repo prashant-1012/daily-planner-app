@@ -9,6 +9,8 @@ import { getUserProfile } from './utils/userProfile';
 
 import FloatingActionButton from './ui/FloatingActionButton';
 import AddTaskModal from './features/tasks/AddTaskModal';
+import NavDrawer from './components/navigation/NavDrawer';
+import UncompletedTasksPage from './features/tasks/UncompletedTasksPage';
 
 function App() {
   const [isDark, toggleDarkMode] = useDarkMode();
@@ -16,6 +18,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+  const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
     const profile = getUserProfile();
@@ -43,12 +47,19 @@ function App() {
         toggleDarkMode={toggleDarkMode} 
         userProfile={userProfile}
         onProfileClick={() => setIsProfileOpen(true)}
+        onMenuClick={() => setIsNavDrawerOpen(true)}
       />
 
       {/* Main Content Area */}
       <main className="max-w-[1600px] mx-auto px-4 md:px-8 py-8 animate-in fade-in duration-500">
-        <Greeting name={userProfile?.name} />
-        <CalendarGrid />
+        {currentPage === 'home' ? (
+          <>
+            <Greeting name={userProfile?.name} />
+            <CalendarGrid />
+          </>
+        ) : currentPage === 'uncompleted' ? (
+          <UncompletedTasksPage />
+        ) : null}
       </main>
 
       {/* Floating Action Button */}
@@ -66,6 +77,14 @@ function App() {
         onClose={() => setIsProfileOpen(false)}
         currentProfile={userProfile}
         onSave={(updatedProfile) => setUserProfile(updatedProfile)}
+      />
+
+      {/* Navigation Drawer */}
+      <NavDrawer
+        isOpen={isNavDrawerOpen}
+        onClose={() => setIsNavDrawerOpen(false)}
+        currentPage={currentPage}
+        onNavigate={setCurrentPage}
       />
     </div>
   );

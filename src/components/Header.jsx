@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Search, Plus, Sun, Moon, Bell, X, Calendar } from 'lucide-react';
+import { Search, Plus, Sun, Moon, Bell, X, Calendar, Menu } from 'lucide-react';
 import { setSearchFilter, setDateFilter } from '../features/tasks/taskSlice';
 
 
-const Header = ({ isDark, toggleDarkMode, userProfile, onProfileClick }) => {
+const Header = ({ isDark, toggleDarkMode, userProfile, onProfileClick, onMenuClick }) => {
   const dispatch = useDispatch();
   const searchFilter = useSelector((state) => state.tasks.filters.search);
   const dateFilter = useSelector((state) => state.tasks.filters.date);
@@ -28,10 +28,14 @@ const Header = ({ isDark, toggleDarkMode, userProfile, onProfileClick }) => {
         
         {/* Left Side: Logo & Search */}
         <div className="flex items-center gap-3 md:gap-6 flex-1 max-w-xl">
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <span className="text-white font-bold text-xl leading-none">P</span>
-            </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={onMenuClick}
+              className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors shadow-sm"
+              aria-label="Open Menu"
+            >
+              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+            </button>
             <span className="hidden sm:block font-bold text-xl tracking-tight dark:text-white">Plannium</span>
           </div>
 

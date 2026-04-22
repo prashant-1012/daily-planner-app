@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Circle, Trash2, Edit3, X, Check } from 'lucide-react';
+import { CheckCircle2, Circle, Trash2, Edit3, X, Check, Calendar, Clock } from 'lucide-react';
+import { format, parseISO } from 'date-fns';
 import { toggleTaskComplete, deleteTask, addTask } from './taskSlice';
 import { useToast } from '../../context/ToastContext';
 import AddTaskModal from './AddTaskModal';
@@ -9,7 +10,7 @@ import AddTaskModal from './AddTaskModal';
 /**
  * TaskItem - Handles individual task display, completion, editing, and deletion.
  */
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, showDate }) => {
   const dispatch = useDispatch();
   const { addToast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,12 +75,25 @@ const TaskItem = ({ task }) => {
             >
               {task.title}
             </p>
-            {(task.startTime || task.endTime) && (
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5 leading-none">
-                {task.startTime ? formatTime(task.startTime) : ''}
-                {task.startTime && task.endTime ? ' - ' : ''}
-                {task.endTime ? formatTime(task.endTime) : ''}
-              </p>
+            {(showDate || task.startTime || task.endTime) && (
+              <div className="text-[10px] text-gray-500 dark:text-gray-400 mt-1 space-y-1">
+                {showDate && task.date && (
+                  <p className="flex items-center gap-1.5 leading-none">
+                    <Calendar className="w-3 h-3" />
+                    <span>{format(parseISO(task.date), 'dd MMM yyyy')}</span>
+                  </p>
+                )}
+                {(task.startTime || task.endTime) && (
+                  <p className="flex items-center gap-1.5 leading-none">
+                    <Clock className="w-3 h-3" />
+                    <span>
+                      {task.startTime ? formatTime(task.startTime) : ''}
+                      {task.startTime && task.endTime ? ' - ' : ''}
+                      {task.endTime ? formatTime(task.endTime) : ''}
+                    </span>
+                  </p>
+                )}
+              </div>
             )}
           </div>
         </div>
