@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useDispatch } from 'react-redux';
-import { X, Calendar, Clock, Plus } from 'lucide-react';
+import { X, Calendar, Clock, Plus, Save } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { addTask } from './taskSlice';
+import { addTask, updateTask } from './taskSlice';
 import { formatDateKey } from '../../utils/dateHelpers';
 import { useToast } from '../../context/ToastContext';
 
-const AddTaskModal = ({ isOpen, onClose }) => {
+const AddTaskModal = ({ isOpen, onClose, taskToEdit }) => {
   const dispatch = useDispatch();
   const { addToast } = useToast();
   
@@ -15,36 +16,55 @@ const AddTaskModal = ({ isOpen, onClose }) => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  // Reset form on close
+  // Reset or populate form on open
   useEffect(() => {
-    if (!isOpen) {
-      setTitle('');
-      setDate(formatDateKey(new Date()));
-      setStartTime('');
-      setEndTime('');
+    if (isOpen) {
+      if (taskToEdit) {
+        setTitle(taskToEdit.title || '');
+        setDate(taskToEdit.date || formatDateKey(new Date()));
+        setStartTime(taskToEdit.startTime || '');
+        setEndTime(taskToEdit.endTime || '');
+      } else {
+        setTitle('');
+        setDate(formatDateKey(new Date()));
+        setStartTime('');
+        setEndTime('');
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, taskToEdit]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim()) return;
 
-    const newTask = {
-      id: crypto.randomUUID(),
-      title: title.trim(),
-      date,
-      startTime: startTime || null,
-      endTime: endTime || null,
-      completed: false,
-      createdAt: new Date().toISOString(),
-    };
-
-    dispatch(addTask(newTask));
-    addToast({ message: 'Task created successfully!' });
+    if (taskToEdit) {
+      const updatedTask = {
+        ...taskToEdit,
+        title: title.trim(),
+        date,
+        startTime: startTime || null,
+        endTime: endTime || null,
+      };
+      dispatch(updateTask(updatedTask));
+      addToast({ message: 'Task updated successfully!' });
+    } else {
+      const newTask = {
+        id: crypto.randomUUID(),
+        title: title.trim(),
+        date,
+        startTime: startTime || null,
+        endTime: endTime || null,
+        completed: false,
+        createdAt: new Date().toISOString(),
+      };
+      dispatch(addTask(newTask));
+      addToast({ message: 'Task created successfully!' });
+    }
+    
     onClose();
   };
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
@@ -74,8 +94,12 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                 >
                   <X className="w-5 h-5" />
                 </button>
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Create New Task</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Plan your next big thing.</p>
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  {taskToEdit ? 'Edit Task' : 'Create New Task'}
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  {taskToEdit ? 'Update your task details.' : 'Plan your next big thing.'}
+                </p>
               </div>
 
               {/* Form */}
@@ -156,8 +180,17 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                   type="submit"
                   className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl py-3.5 font-bold shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 mt-4 hover:shadow-indigo-500/40 transition-all"
                 >
-                  <Plus className="w-5 h-5" strokeWidth={3} />
-                  Create Task
+                  {taskToEdit ? (
+                    <>
+                      <Save className="w-5 h-5" strokeWidth={2.5} />
+                      Update Task
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-5 h-5" strokeWidth={3} />
+                      Create Task
+                    </>
+                  )}
                 </motion.button>
               </form>
             </motion.div>
@@ -166,6 +199,8 @@ const AddTaskModal = ({ isOpen, onClose }) => {
       )}
     </AnimatePresence>
   );
+
+  return typeof document !== 'undefined' ? createPortal(modalContent, document.body) : null;
 };
 
 export default AddTaskModal;

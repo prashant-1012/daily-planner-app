@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Circle, Trash2, Edit3, X, Check } from 'lucide-react';
-import { toggleTaskComplete, deleteTask, updateTask, addTask } from './taskSlice';
+import { toggleTaskComplete, deleteTask, addTask } from './taskSlice';
 import { useToast } from '../../context/ToastContext';
+import AddTaskModal from './AddTaskModal';
 
 /**
  * TaskItem - Handles individual task display, completion, editing, and deletion.
@@ -11,31 +12,7 @@ import { useToast } from '../../context/ToastContext';
 const TaskItem = ({ task }) => {
   const dispatch = useDispatch();
   const { addToast } = useToast();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(task.title);
-  const editInputRef = useRef(null);
-
-  // Focus input when entering edit mode
-  useEffect(() => {
-    if (isEditing && editInputRef.current) {
-      editInputRef.current.focus();
-    }
-  }, [isEditing]);
-
-  const handleUpdate = () => {
-    if (editedTitle.trim() && editedTitle !== task.title) {
-      dispatch(updateTask({ ...task, title: editedTitle.trim() }));
-    }
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleUpdate();
-    if (e.key === 'Escape') {
-      setIsEditing(false);
-      setEditedTitle(task.title);
-    }
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formatTime = (time) => {
     if (!time) return '';
@@ -51,52 +28,41 @@ const TaskItem = ({ task }) => {
   };
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-      className={`group flex items-center gap-2.5 p-2 rounded-xl border transition-all duration-200
-        ${task.completed 
-          ? 'bg-gray-50/50 dark:bg-gray-800/30 border-transparent shadow-inner' 
-          : 'bg-white dark:bg-gray-800/80 border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900/50'
-        }`}
-    >
-      {/* Checkbox Icon */}
-      <button 
-        onClick={() => dispatch(toggleTaskComplete(task.id))}
-        className="relative flex items-center justify-center w-5 h-5 shrink-0 transition-transform active:scale-95 group"
-        aria-label="Toggle Complete"
+    <>
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+        className={`group flex items-center gap-2.5 p-2 rounded-xl border transition-all duration-200
+          ${task.completed 
+            ? 'bg-gray-50/50 dark:bg-gray-800/30 border-transparent shadow-inner' 
+            : 'bg-white dark:bg-gray-800/80 border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900/50'
+          }`}
       >
-        <div 
-          className={`absolute inset-0 rounded-[6px] border-[1.5px] transition-all duration-300 ease-out
-            ${task.completed 
-              ? 'bg-green-500 border-green-500 scale-[1.15]' 
-              : 'bg-transparent border-gray-300 dark:border-gray-600 group-hover:border-green-400 scale-100'
-            }`}
-        />
-        <Check 
-          strokeWidth={4}
-          className={`relative z-10 w-2.5 h-2.5 text-white transition-all duration-300 delay-75 ${
-            task.completed ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-          }`} 
-        />
-      </button>
+        {/* Checkbox Icon */}
+        <button 
+          onClick={() => dispatch(toggleTaskComplete(task.id))}
+          className="relative flex items-center justify-center w-5 h-5 shrink-0 transition-transform active:scale-95 group"
+          aria-label="Toggle Complete"
+        >
+          <div 
+            className={`absolute inset-0 rounded-[6px] border-[1.5px] transition-all duration-300 ease-out
+              ${task.completed 
+                ? 'bg-green-500 border-green-500 scale-[1.15]' 
+                : 'bg-transparent border-gray-300 dark:border-gray-600 group-hover:border-green-400 scale-100'
+              }`}
+          />
+          <Check 
+            strokeWidth={4}
+            className={`relative z-10 w-2.5 h-2.5 text-white transition-all duration-300 delay-75 ${
+              task.completed ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+            }`} 
+          />
+        </button>
 
-      {/* Task Text / Edit Input */}
-      <div className="flex-1 min-w-0 py-0.5">
-        {isEditing ? (
-          <div className="flex items-center gap-2">
-            <input
-              ref={editInputRef}
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onBlur={handleUpdate}
-              className="w-full bg-blue-50 dark:bg-blue-900/20 border-none px-2 py-1 rounded-lg text-xs dark:text-gray-100 outline-none focus:ring-2 focus:ring-blue-500/50"
-            />
-          </div>
-        ) : (
+        {/* Task Text */}
+        <div className="flex-1 min-w-0 py-0.5">
           <div className="flex flex-col">
             <p 
               onClick={() => dispatch(toggleTaskComplete(task.id))}
@@ -116,47 +82,52 @@ const TaskItem = ({ task }) => {
               </p>
             )}
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* Action Buttons (Desktop Hover / Always on Mobile) */}
-      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 lg:opacity-0 transition-opacity">
-        <button 
-          onClick={() => setIsEditing(true)}
-          className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all"
-          title="Edit Task"
-        >
-          <Edit3 className="w-3.5 h-3.5" />
-        </button>
-        <button 
-          onClick={() => {
-            dispatch(deleteTask(task.id));
-            addToast({
-              message: 'Task deleted',
-              actionText: 'Undo',
-              onAction: () => dispatch(addTask(task)),
-              duration: 4000
-            });
-          }}
-          className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all"
-          title="Delete Task"
-        >
-          <Trash2 className="w-3.5 h-3.5" />
-        </button>
-      </div>
+        {/* Action Buttons (Desktop Hover / Always on Mobile) */}
+        <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 lg:opacity-0 transition-opacity">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all"
+            title="Edit Task"
+          >
+            <Edit3 className="w-3.5 h-3.5" />
+          </button>
+          <button 
+            onClick={() => {
+              dispatch(deleteTask(task.id));
+              addToast({
+                message: 'Task deleted',
+                actionText: 'Undo',
+                onAction: () => dispatch(addTask(task)),
+                duration: 4000
+              });
+            }}
+            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all"
+            title="Delete Task"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
 
-
-      {/* For Tablet/Mobile: Action icons always visible if not editing */}
-      <style>
-        {`
-          @media (max-width: 1024px) {
-            .opacity-0.group-hover\\:opacity-100 {
-              opacity: 1 !important;
+        {/* For Tablet/Mobile: Action icons always visible if not editing */}
+        <style>
+          {`
+            @media (max-width: 1024px) {
+              .opacity-0.group-hover\\:opacity-100 {
+                opacity: 1 !important;
+              }
             }
-          }
-        `}
-      </style>
-    </motion.div>
+          `}
+        </style>
+      </motion.div>
+
+      <AddTaskModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        taskToEdit={task}
+      />
+    </>
   );
 };
 
